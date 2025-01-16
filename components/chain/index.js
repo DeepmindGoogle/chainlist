@@ -15,7 +15,17 @@ export default function Chain({ chain, buttonOnly, lang }) {
   const router = useRouter();
 
   const icon = React.useMemo(() => {
-    return chain.chainSlug ? `https://icons.llamao.fi/icons/chains/rsz_${chain.chainSlug}.jpg` : "/unknown-logo.png";
+    const iconUrl = chain.chainSlug
+      ? `https://icons.llamao.fi/icons/chains/rsz_${chain.chainSlug}.jpg`
+      : "/unknown-logo.png";
+
+    const img = new Image();
+    img.src = iconUrl;
+    img.onerror = () => {
+      img.src = "/unknown-logo.png";
+    };
+
+    return img.src;
   }, [chain]);
 
   const chainId = useChain((state) => state.id);
